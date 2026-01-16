@@ -73,3 +73,15 @@ Getting Started with Laravel
   composer -V
   composer --version
   ```
+- Uncomment this in php.ini
+  ```
+  extension=curl
+  extension=fileinfo
+  extension=mbstring
+  extension=openssl
+  extension=pdo_mysql
+  extension=tokenizer
+  extension=xml
+  extension=zip
+
+  ```
