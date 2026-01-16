@@ -85,3 +85,11 @@ Getting Started with Laravel
   extension=zip
 
   ```
+
+  ## QuickTest if your lavel is connected to Mysql
+  ```
+  php artisan tinker
+  App\Models\Task::create(['title' => 'Test Task']);
+
+
+  ```
