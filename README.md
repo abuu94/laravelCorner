@@ -58,3 +58,18 @@ Getting Started with Laravel
   mysql -u root -p school_website < C:\Users\PC\Desktop\impoerted_db.sql
 ```
 
+## Simple Method for Setup:
+- Install xampp apache
+- Add php in enviromental system variables settings
+- Install composer
+- Check Architecture
+  ```
+  php -i | find "Architecture"
+  ```
+- Install Microsoft Visual C++ Redistributable for Visual Studio 2015–2022
+- Test
+  ```
+  php -v
+  composer -V
+  composer --version
+  ```
