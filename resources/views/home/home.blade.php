@@ -15,31 +15,34 @@
     
     @auth
      <!-- Top Bar -->
-    <nav class="navbar navbar-light bg-info mb-4 ">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            
-            <div class="d-flex align-items-center">
-            <span class="navbar-brand mb-0 h1 text-success">Task To Do</span>
-            
-            </div>
-            
-            <div>
-            <span class="me-6 text-primary">Welcome Abubakar</span>
-            <button class="btn btn-primary me-2 " data-bs-toggle="modal" data-bs-target="#addPostModal" >
-                 <i class="bi bi-plus-circle me-1"></i> Add Post 
-            </button> 
-            <button class="btn btn-outline-danger ">
-                 <i class="bi bi-box-arrow-right me-1"></i> Logout
-             </button>
+     <nav class="navbar navbar-light bg-info mb-4">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    
+    <!-- Left side -->
+    <div class="d-flex align-items-center">
+      <span class="navbar-brand mb-0 h1 text-success">Task To Do</span>
+    </div>
+    
+    <!-- Right side (horizontal alignment) -->
+    <div class="d-flex align-items-center">
+      <span class="text-primary me-3">Welcome , {{ Auth::user()->name}}</span>
+      
+      <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addPostModal">
+        <i class="bi bi-plus-circle me-1"></i> Add Post
+      </button>
+      
+      <form action="/logout" method="POST" class="mb-0">
+        @csrf
+        <button class="btn btn-outline-danger">
+          <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </button>
+      </form>
+    </div>
+    
+  </div>
+</nav>
 
-             
-
-          
-            </div>
-            
-        </div>
-    </nav>
-        
+       
 
 
 <!-- Modal -->
@@ -79,31 +82,77 @@
 </div>
 
       <!-- List of Posts -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">All Posts</h5>
-        </div>
-        <div class="card-body">
-            @forelse($posts as $post)
-                <div class="border rounded p-3 mb-3">
-                    <h4>{{ $post->title }}</h4>
-                    <p>{{ $post->body }}</p>
-                    <small class="text-muted">By {{ $post->user->name }}</small>
+      <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">All Posts</h5>
+            </div>
+            <div class="card-body">
+                @if($posts->count())
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Content</th>
+                                    {{-- <th>Author</th> --}}
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($posts as $index => $post)
+                                    <tr>
+                                        <td>
+                                            {{-- {{ $index + 1 }} --}}
+                                            {{ $posts->firstItem() + $index }}
 
-                    <div class="mt-2">
-                        <a href="/edit-post/{{$post->id}}" class="btn btn-sm btn-info">Edit</a>
-                        <form action="/delete-post/{{$post->id}}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                                        </td>
+                                        <td>{{ $post->title }}</td>
+                                        <td>{{ $post->body }}</td>
+                                        {{-- <td>{{ $post->user->name }}</td> --}}
+                                        <td>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <a href="/edit-post/{{ $post->id }}" class="btn btn-sm btn-info">Edit</a>
+                                                
+                                                <form action="/delete-post/{{ $post->id }}" method="POST" class="mb-0">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            @empty
-                <p class="text-muted">No posts yet. Create one above!</p>
-            @endforelse
+                    <!-- Pagination links -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <nav>
+                            <ul class="pagination pagination-sm justify-content-center">
+                                {{ $posts->links('pagination::bootstrap-5') }}
+                            </ul>
+                        </nav>
+                    </div>
+
+                     <!-- Pagination links -->
+                    {{-- <div class="d-flex justify-content-center mt-3">
+                        {{ $posts->links() }}
+                        {{ $posts->links('pagination::bootstrap-5') }}
+                        {{ $posts->firstItem() + $index }}
+                    </div> --}}
+                @else
+                    {{-- <p class="text-muted">No posts yet. Create one above!</p> --}}
+                    <div class="d-flex justify-content-center align-items-center" style="height:50px;">
+                        <p class="text-muted mb-0">No posts yet. Create one above!</p>
+                    </div>
+
+                @endif
+            </div>
         </div>
-    </div>
+
    
     @else
 

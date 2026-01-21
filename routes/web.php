@@ -14,7 +14,8 @@ Route::get('/', function () {
     $posts =[];
     if (auth()->check()){
 
-        $posts = auth()->user()->usersCoolPosts()->latest()->get();
+        $posts = auth()->user()->usersCoolPosts()->latest()->paginate(2);
+        // $posts = auth()->user()->usersCoolPosts()->latest()->get();
     }
     return view('home/home',['posts'=> $posts]);
 });
