@@ -6,6 +6,8 @@
     @vite(['../resources/css/app.css', '../resources/js/app.js'])
     <!-- Add Bootstrap Icons --> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <!-- Add Font Awesome --> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Add Modal Utility --> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body class="bg-light">
     @yield('content')
@@ -13,13 +15,6 @@
     
     @auth
      <!-- Top Bar -->
-    {{-- <div class="alert alert-primary d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary">Welcome, {{ Auth::user()->name }}</h2>
-        <form action="/logout" method="POST">
-            @csrf
-            <button class="btn btn-danger">Logout</button>
-        </form>
-    </div> --}}
     <nav class="navbar navbar-light bg-info mb-4 ">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             
@@ -30,43 +25,58 @@
             
             <div>
             <span class="me-6 text-primary">Welcome Abubakar</span>
-            <button class="btn btn-primary me-2">
+            <button class="btn btn-primary me-2 " data-bs-toggle="modal" data-bs-target="#addPostModal" >
                  <i class="bi bi-plus-circle me-1"></i> Add Post 
             </button> 
             <button class="btn btn-outline-danger ">
                  <i class="bi bi-box-arrow-right me-1"></i> Logout
              </button>
 
+             
+
           
             </div>
             
         </div>
     </nav>
+        
 
 
-
-    
-
-     <!-- Add New Post -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Create a New Post</h5>
+<!-- Modal -->
+<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="addPostModalLabel">Add New Post</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <form action="/create-post" method="POST">
+          @csrf
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="postTitle" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="postTitle" placeholder="Enter post title">
+            </div>
+            <div class="mb-3">
+                <label for="postContent" class="form-label">Content</label>
+                <textarea class="form-control" name="body" id="postContent" rows="3" placeholder="Enter post content"></textarea>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="/create-post" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label class="form-label">Title</label>
-                    <input type="text" name="title" class="form-control" placeholder="Enter post title" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Body</label>
-                    <textarea name="body" class="form-control" rows="4" placeholder="Enter post content" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">Save Post</button>
-            </form>
+        
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Post</button>
         </div>
+    </form>
+      
     </div>
+  </div>
+</div>
 
       <!-- List of Posts -->
     <div class="card shadow-sm">
@@ -96,7 +106,6 @@
     </div>
    
     @else
- 
 
     <div class="container py-5 mt-5">
         <div class="row justify-content-center">
@@ -147,12 +156,7 @@
             </div>
         </div>
     </div>
-
-    @endauth
-
-   
-
-   
+    @endauth   
 </body>
 </html>
 
